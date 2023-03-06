@@ -6,6 +6,7 @@ pid2=0
 pid3=0
 pid4=0
 pid5=0
+pid6=0
 timer=0
 
 
@@ -22,6 +23,8 @@ spawn() {
     pid4=$!
     ./APM5 $1 &
     pid5=$! 
+    ./APM6 $1 &
+    pid6=$!
 
     # Set Update Rate & Create Files
     ifstat -d 1
@@ -31,8 +34,7 @@ spawn() {
     echo "" > APM3_metrics.csv
     echo "" > APM4_metrics.csv
     echo "" > APM5_metrics.csv
-
-    
+    echo "" > APM6_metrics.csv
 }
 
 # Person 2
@@ -58,6 +60,9 @@ proc_level_metrics() {
     # PID 5
     output=$(echo $ps | grep $pid5 | cut -d -f2,3 | sed 's/ /,/g')
     echo "$timer,$output" >> APM5_metrics.csv 
+    # PID 6
+    output=$(echo $ps | grep $pid6 | cut -d -f2,3 | sed 's/ /,/g')
+    echo "$timer,$output" >> APM6_metrics.csv 
 }
 
 # Person 2
@@ -72,6 +77,13 @@ sys_level_metrics() {
 cleanup() {
     # Get all PIDS with APM* processes
     # Kill APM processes by PID
+    kill $pid1
+    kill $pid2 
+    kill $pid3
+    kill $pid4
+    kill $pid5
+    kill $pid6
+    
     # Kill ifstat by name 
     pkill ifstat
     # Generate Reports?
