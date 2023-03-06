@@ -13,10 +13,10 @@ timer=0
 
 spawn() { 
     # IP Provided
-    if [ $# -ne 1 ] 
+    if [ $# -ne $1 ] 
     then
         echo "Usage <Ip>"
-        return 1
+        exit 1
     fi
 
     # Start Processes @ Save PIDs
@@ -109,7 +109,7 @@ spawn
 
 # Enter Loop
 while true; do
-    sleep(5)
+    sleep 5
     timer=$(($timer+5))
     proc_level_metrics
     sys_level_metrics
