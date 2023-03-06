@@ -12,25 +12,18 @@ timer=0
 
 
 spawn() { 
-    # IP Provided
-    if [ $# -ne $1 ] 
-    then
-        echo "Usage <Ip>"
-        exit 1
-    fi
-
     # Start Processes @ Save PIDs
-    ./APM1 $1 &
+    ./project1_executables/APM1 $1 &
     pid1=$!
-    ./APM2 $1 &
+    ./project1_executables/APM2 $1 &
     pid2=$!
-    ./APM3 $1 &
+    ./project1_executables/APM3 $1 &
     pid3=$!
-    ./APM4 $1 &
+    ./project1_executables/APM4 $1 &
     pid4=$!
-    ./APM5 $1 &
+    ./project1_executables/APM5 $1 &
     pid5=$! 
-    ./APM6 $1 &
+    ./project1_executables/APM6 $1 &
     pid6=$!
 
     # Set Update Rate & Create Files
@@ -52,23 +45,25 @@ proc_level_metrics() {
     # CPU - In % Util
     # Memory - In % Util
     ps=$(ps -eo pid,%cpu,%mem | tr -s ' ')
+
     # PID 1
-    output=$(echo $ps | grep $pid1 | cut -d -f2,3 | sed 's/ /,/g')
+    output=$(echo $ps | grep $pid1 | cut -d ' ' -f4,5 | sed 's/ /,/g')
+    #echo $(echo $ps | grep $pid1)
     echo "$timer,$output" >> metrics/APM1_metrics.csv 
     # PID 2
-    output=$(echo $ps | grep $pid2 | cut -d -f2,3 | sed 's/ /,/g')
+    output=$(echo $ps | grep $pid2 | cut -d ' ' -f4,5 | sed 's/ /,/g')
     echo "$timer,$output" >> metrics/APM2_metrics.csv 
     # PID 3
-    output=$(echo $ps | grep $pid3 | cut -d -f2,3 | sed 's/ /,/g')
+    output=$(echo $ps | grep $pid3 | cut -d ' ' -f4,5 | sed 's/ /,/g')
     echo "$timer,$output" >> metrics/APM3_metrics.csv 
     # PID 4
-    output=$(echo $ps | grep $pid4 | cut -d -f2,3 | sed 's/ /,/g')
+    output=$(echo $ps | grep $pid4 | cut -d ' ' -f4,5 | sed 's/ /,/g')
     echo "$timer,$output" >> metrics/APM4_metrics.csv 
     # PID 5
-    output=$(echo $ps | grep $pid5 | cut -d -f2,3 | sed 's/ /,/g')
+    output=$(echo $ps | grep $pid5 | cut -d ' ' -f4,5 | sed 's/ /,/g')
     echo "$timer,$output" >> metrics/APM5_metrics.csv 
     # PID 6
-    output=$(echo $ps | grep $pid6 | cut -d -f2,3 | sed 's/ /,/g')
+    output=$(echo $ps | grep $pid6 | cut -d ' ' -f4,5 | sed 's/ /,/g')
     echo "$timer,$output" >> metrics/APM6_metrics.csv 
 }
 
@@ -104,13 +99,20 @@ trap cleanup EXIT
 ## Main ##
 ##########
 
+# IP Provided
+if [ $# != 1 ] 
+then
+    echo "Usage ./Project1.sh <IP_Address>"
+    exit -1
+fi
+
 # Start Processes
-spawn
+spawn $1
 
 # Enter Loop
 while true; do
     sleep 5
-    timer=$(($timer+5))
+    timer=$(($SECONDS))
     proc_level_metrics
     sys_level_metrics
 done
