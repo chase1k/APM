@@ -12,6 +12,13 @@ timer=0
 
 
 spawn() { 
+    # IP Provided
+    if [ $# -ne 1 ] 
+    then
+        echo "Usage <Ip>"
+        return 1
+    fi
+
     # Start Processes @ Save PIDs
     ./APM1 $1 &
     pid1=$!
@@ -96,6 +103,7 @@ trap cleanup EXIT
 ##########
 ## Main ##
 ##########
+
 # Start Processes
 spawn
 
@@ -106,3 +114,4 @@ while true; do
     proc_level_metrics
     sys_level_metrics
 done
+
