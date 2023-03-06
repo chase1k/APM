@@ -28,13 +28,13 @@ spawn() {
 
     # Set Update Rate & Create Files
     ifstat -d 1
-    echo "" > system_metrics.csv
-    echo "" > APM1_metrics.csv
-    echo "" > APM2_metrics.csv
-    echo "" > APM3_metrics.csv
-    echo "" > APM4_metrics.csv
-    echo "" > APM5_metrics.csv
-    echo "" > APM6_metrics.csv
+    echo "" > metrics/system_metrics.csv
+    echo "" > metrics/APM1_metrics.csv
+    echo "" > metrics/APM2_metrics.csv
+    echo "" > metrics/APM3_metrics.csv
+    echo "" > metrics/APM4_metrics.csv
+    echo "" > metrics/APM5_metrics.csv
+    echo "" > metrics/APM6_metrics.csv
 }
 
 # Person 2
@@ -47,22 +47,22 @@ proc_level_metrics() {
     ps=$(ps -eo pid,%cpu,%mem | tr -s ' ')
     # PID 1
     output=$(echo $ps | grep $pid1 | cut -d -f2,3 | sed 's/ /,/g')
-    echo "$timer,$output" >> APM1_metrics.csv 
+    echo "$timer,$output" >> metrics/APM1_metrics.csv 
     # PID 2
     output=$(echo $ps | grep $pid2 | cut -d -f2,3 | sed 's/ /,/g')
-    echo "$timer,$output" >> APM2_metrics.csv 
+    echo "$timer,$output" >> metrics/APM2_metrics.csv 
     # PID 3
     output=$(echo $ps | grep $pid3 | cut -d -f2,3 | sed 's/ /,/g')
-    echo "$timer,$output" >> APM3_metrics.csv 
+    echo "$timer,$output" >> metrics/APM3_metrics.csv 
     # PID 4
     output=$(echo $ps | grep $pid4 | cut -d -f2,3 | sed 's/ /,/g')
-    echo "$timer,$output" >> APM4_metrics.csv 
+    echo "$timer,$output" >> metrics/APM4_metrics.csv 
     # PID 5
     output=$(echo $ps | grep $pid5 | cut -d -f2,3 | sed 's/ /,/g')
-    echo "$timer,$output" >> APM5_metrics.csv 
+    echo "$timer,$output" >> metrics/APM5_metrics.csv 
     # PID 6
     output=$(echo $ps | grep $pid6 | cut -d -f2,3 | sed 's/ /,/g')
-    echo "$timer,$output" >> APM6_metrics.csv 
+    echo "$timer,$output" >> metrics/APM6_metrics.csv 
 }
 
 # Person 2
@@ -70,7 +70,7 @@ sys_level_metrics() {
     # ifstat to get network usage - Upload/Download Speed (KB/s)
     # iostat to get hdd usage - Read/Write (KB/s)
     # df to get HDD space left - Display in (MB)
-
+	echo "Sys level metrics"
 }
 
 # Person 1
