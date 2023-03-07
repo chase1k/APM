@@ -28,7 +28,7 @@ spawn() {
 
     # Set Update Rate & Create Files
     ifstat -d 1
-    echo "" > metrics/system_metrics.csv
+    echo "seconds,RX,TX" > metrics/system_metrics.csv
     echo "seconds,cpu(%),memory(%)" > metrics/APM1_metrics.csv
     echo "seconds,cpu(%),memory(%)" > metrics/APM2_metrics.csv
     echo "seconds,cpu(%),memory(%)" > metrics/APM3_metrics.csv
@@ -70,9 +70,12 @@ proc_level_metrics() {
 # Person 2
 sys_level_metrics() {
     # ifstat to get network usage - Upload/Download Speed (KB/s)
+    RX=$(ifstat | grep "ens33" | tr -s ' ' | cut -d ' ' -f6 | sed 's/K//g')
+    TX=$(ifstat | grep "ens33" | tr -s ' ' | cut -d ' ' -f8 | sed 's/K//g')
+    echo "$timer, $RX, $TX" >> metrics/system_metrics.csv
+
     # iostat to get hdd usage - Read/Write (KB/s)
     # df to get HDD space left - Display in (MB)
-	echo "Sys level metrics"
 }
 
 # Person 1
@@ -115,5 +118,6 @@ while true; do
     timer=$(($SECONDS))
     proc_level_metrics
     sys_level_metrics
+    echo "Timer: $timer"
 done
 
