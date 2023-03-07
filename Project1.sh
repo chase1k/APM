@@ -72,10 +72,11 @@ sys_level_metrics() {
     # ifstat to get network usage - Upload/Download Speed (KB/s)
     RX=$(ifstat | grep "ens33" | tr -s ' ' | cut -d ' ' -f6 | sed 's/K//g')
     TX=$(ifstat | grep "ens33" | tr -s ' ' | cut -d ' ' -f8 | sed 's/K//g')
-    echo "$timer, $RX, $TX" >> metrics/system_metrics.csv
-
     # iostat to get hdd usage - Read/Write (KB/s)
+    read=$(iostat sda | grep "sda" |  tr -s ' ' | cut -d ' ' -f3)
+    write=$(iostat sda | grep "sda" |  tr -s ' ' | cut -d ' ' -f4)
     # df to get HDD space left - Display in (MB)
+    echo "$timer, $RX, $TX,  $read, $write" >> metrics/system_metrics.csv
 }
 
 # Person 1
