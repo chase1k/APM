@@ -70,7 +70,7 @@ proc_level_metrics() {
 # Person 2
 sys_level_metrics() {
     # ifstat to get network usage - Upload/Download Speed (KB/s)
-    RX=$(ifstat | grep "ens33" | tr -s ' ' | cut -d ' ' -f6 | sed 's/K//g')
+    RX=$(ifstat | grep "ens33" | tr -s ' ' | cut -d ' ' -f6 | sed 's/K//g') #if we keep getting the stale history error we can use -a to ignore history, and if you want a cleaner les temp-filey ifstat you can add -s to not write history
     TX=$(ifstat | grep "ens33" | tr -s ' ' | cut -d ' ' -f8 | sed 's/K//g')
     # iostat to get hdd usage - Read/Write (KB/s)
     read=$(iostat sda | grep "sda" |  tr -s ' ' | cut -d ' ' -f3)
@@ -120,6 +120,6 @@ while true; do
     timer=$(($SECONDS))
     proc_level_metrics
     sys_level_metrics
-    echo "Timer: $timer"
+    echo "Timer: $timer seconds elapsed"
 done
 
