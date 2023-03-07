@@ -76,7 +76,8 @@ sys_level_metrics() {
     read=$(iostat sda | grep "sda" |  tr -s ' ' | cut -d ' ' -f3)
     write=$(iostat sda | grep "sda" |  tr -s ' ' | cut -d ' ' -f4)
     # df to get HDD space left - Display in (MB)
-    echo "$timer, $RX, $TX, $read, $write" >> metrics/system_metrics.csv
+    stor=$(df -m / | grep "/" | tr -s ' ' | cut -d ' ' -f3)
+    echo "$timer, $RX, $TX, $read, $write, $stor" >> metrics/system_metrics.csv
 }
 
 # Person 1
