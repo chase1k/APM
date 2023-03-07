@@ -29,12 +29,12 @@ spawn() {
     # Set Update Rate & Create Files
     ifstat -d 1
     echo "" > metrics/system_metrics.csv
-    echo "" > metrics/APM1_metrics.csv
-    echo "" > metrics/APM2_metrics.csv
-    echo "" > metrics/APM3_metrics.csv
-    echo "" > metrics/APM4_metrics.csv
-    echo "" > metrics/APM5_metrics.csv
-    echo "" > metrics/APM6_metrics.csv
+    echo "seconds,cpu(%),memory(%)" > metrics/APM1_metrics.csv
+    echo "seconds,cpu(%),memory(%)" > metrics/APM2_metrics.csv
+    echo "seconds,cpu(%),memory(%)" > metrics/APM3_metrics.csv
+    echo "seconds,cpu(%),memory(%)" > metrics/APM4_metrics.csv
+    echo "seconds,cpu(%),memory(%)" > metrics/APM5_metrics.csv
+    echo "seconds,cpu(%),memory(%)" > metrics/APM6_metrics.csv
 }
 
 # Person 2
