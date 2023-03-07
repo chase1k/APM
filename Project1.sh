@@ -28,7 +28,7 @@ spawn() {
 
     # Set Update Rate & Create Files
     ifstat -d 1
-    echo "seconds,RX,TX" > metrics/system_metrics.csv
+    echo "seconds,RX,TX,read(kB/s),write(kB/s),usage of /(MB)" > metrics/system_metrics.csv
     echo "seconds,cpu(%),memory(%)" > metrics/APM1_metrics.csv
     echo "seconds,cpu(%),memory(%)" > metrics/APM2_metrics.csv
     echo "seconds,cpu(%),memory(%)" > metrics/APM3_metrics.csv
