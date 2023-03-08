@@ -9,8 +9,6 @@ pid5=0
 pid6=0
 timer=0
 
-
-
 spawn() { 
     # Start Processes @ Save PIDs
     ./project1_executables/APM1 $1 &
@@ -25,6 +23,8 @@ spawn() {
     pid5=$! 
     ./project1_executables/APM6 $1 &
     pid6=$!
+
+    echo "PID Values of each APM executable: $pid1 $pid2 $pid3 $pid4 $pid5 $pid6"
 
     # Set Update Rate & Create Files
     ifstat -d 1
@@ -41,36 +41,34 @@ spawn() {
 proc_level_metrics() {
     # Use ps to get process metrics
     # use the pid variable to display only the PID we want
-    # use cut or awk to get the usage stats
+    # use cut to get the usage stats
     # CPU - In % Util
     # Memory - In % Util
-    ps=$(ps -eo pid,%cpu,%mem | tr -s ' ')
 
-    # PID 1
-    output=$(echo $ps | grep $pid1 | cut -d ' ' -f4,5 | sed 's/ /,/g')
-    #echo $(echo $ps | grep $pid1)
+    # PID 1 never has any usage
+    output=$(ps -q $pid1 -o pcpu,pmem | tail -n1 | tr -s ' ' ',' | cut -c 2- )
     echo "$timer,$output" >> metrics/APM1_metrics.csv 
-    # PID 2
-    output=$(echo $ps | grep $pid2 | cut -d ' ' -f4,5 | sed 's/ /,/g')
+    # PID 2 never has any usage
+    output=$(ps -q $pid2 -o pcpu,pmem | tail -n1 | tr -s ' ' ',' | cut -c 2- )
     echo "$timer,$output" >> metrics/APM2_metrics.csv 
     # PID 3
-    output=$(echo $ps | grep $pid3 | cut -d ' ' -f4,5 | sed 's/ /,/g')
+    output=$(ps -q $pid3 -o pcpu,pmem | tail -n1 | tr -s ' ' ',' | cut -c 2- )
     echo "$timer,$output" >> metrics/APM3_metrics.csv 
     # PID 4
-    output=$(echo $ps | grep $pid4 | cut -d ' ' -f4,5 | sed 's/ /,/g')
+    output=$(ps -q $pid4 -o pcpu,pmem | tail -n1 | tr -s ' ' ',' | cut -c 2- )
     echo "$timer,$output" >> metrics/APM4_metrics.csv 
     # PID 5
-    output=$(echo $ps | grep $pid5 | cut -d ' ' -f4,5 | sed 's/ /,/g')
+    output=$(ps -q $pid5 -o pcpu,pmem | tail -n1 | tr -s ' ' ',' | cut -c 2- )
     echo "$timer,$output" >> metrics/APM5_metrics.csv 
     # PID 6
-    output=$(echo $ps | grep $pid6 | cut -d ' ' -f4,5 | sed 's/ /,/g')
+    output=$(ps -q $pid6 -o pcpu,pmem | tail -n1 | tr -s ' ' ',' | cut -c 2- )
     echo "$timer,$output" >> metrics/APM6_metrics.csv 
 }
 
 # Person 2
 sys_level_metrics() {
     # ifstat to get network usage - Upload/Download Speed (KB/s)
-    RX=$(ifstat | grep "ens33" | tr -s ' ' | cut -d ' ' -f6 | sed 's/K//g') #if we keep getting the stale history error we can use -a to ignore history, and if you want a cleaner les temp-filey ifstat you can add -s to not write history
+    RX=$(ifstat | grep "ens33" | tr -s ' ' | cut -d ' ' -f6 | sed 's/K//g')
     TX=$(ifstat | grep "ens33" | tr -s ' ' | cut -d ' ' -f8 | sed 's/K//g')
     # iostat to get hdd usage - Read/Write (KB/s)
     read=$(iostat sda | grep "sda" |  tr -s ' ' | cut -d ' ' -f3)
